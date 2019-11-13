@@ -46,7 +46,10 @@ int main(int argc, char** argv) {
      * This helps the end-user understand things little bit.
      */
     fprintf(stderr, 
-        "%s (Duration: %.2fs, Channels: %d, Out Gain: %d dBFS)",
+        "* %s\n"
+        "   - Duration: %.2fs\n"
+        "   - Channels: %d\n"
+        "   - Out Gain: %d dBFS\n",
         argv[1], (float)op_pcm_total(opus_file_handle, 0) / 48000.0f,
         header->channel_count,
         header->output_gain
