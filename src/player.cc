@@ -34,9 +34,17 @@ int main(int argc, char** argv) {
         .rate = 48000, // https://github.com/xiph/opusfile/blob/master/include/opusfile.h#L56
     };
 
-    for(size_t file = 0; file < opus_files.gl_pathc; ++file) {
-        OggOpusFile* opus_file_handle = op_open_file(opus_files.gl_pathv[file], &error);
+    size_t file_idx = 0;
+    player:
+        OggOpusFile* opus_file_handle = op_open_file(opus_files.gl_pathv[file_idx], &error);
         assert(("File doesn't exist in the filesystem!", error == 0));
+
+        /* Skip the current file if cannot be opened. */
+        if(error != 0) {
+            ++file_idx;
+            fprintf(stderr, "%s: the file a invalid OPUS file or doesn't exist!", opus_files.gl_pathv[file_idx]);
+            goto player;
+        }
 
         const OpusHead* header = op_head(opus_file_handle, 0);
         playback_attrs.channels = header->channel_count;
@@ -73,7 +81,7 @@ int main(int argc, char** argv) {
             "   - Duration: %.2fs\n"
             "   - Channels: %s\n"
             "   - Out Gain: %d dBFS\n",
-            opus_files.gl_pathv[file], (float)op_pcm_total(opus_file_handle, 0) / 48000.0f,
+            opus_files.gl_pathv[file_idx], (float)op_pcm_total(opus_file_handle, 0) / 48000.0f,
             channel_name_h(header->channel_count).c_str(),
             header->output_gain
         );
@@ -97,5 +105,6 @@ int main(int argc, char** argv) {
         pa_simple_drain(playback, &error); // Wait unti all the data is finished to write.
         pa_simple_flush(playback, &error); // Flush all the reamaining data as samples.
         pa_simple_free(playback); // Free the instance.
-    }
+
+        if(file_idx < opus_files.gl_pathc) goto player;
 }
