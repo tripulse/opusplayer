@@ -2,4 +2,6 @@ language: cpp
 compiler: gcc
 before_install: sudo apt-get install libpulse-dev libopus-dev libopusfile-dev
 install: make build
-script: echo "Tests aren't valid for this program"
+script:
+  - echo "Tests aren't valid for this program"
+  - make clean
