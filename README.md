@@ -4,9 +4,10 @@
 
 A simple and lightweight application written in C for playing OPUS files (files are parsed as glob expressions). With the mixture of **`opusfile`** and **PortAudio** this application is made (this is somewhat inferior to SOX's `play`).
 
-### Lacking features
-- Play/Pause
-- ncurses GUI
+### Key features
+- OPUS decoding via `libopusfile`.
+- Cross-platform audio API.
+- Glob expressions to select files.
 
 ## Installation
 
