@@ -2,8 +2,7 @@
 
 [![Build Status](https://travis-ci.org/nullvideo/opusplayer.svg?branch=master)](https://travis-ci.org/nullvideo/opusplayer)
 
-A simple and lightweight application written in C for playing OPUS files (files are parsed as glob expressions). With the mixture of
-**`opusfile`** and **PortAudio** this application is made.
+A simple and lightweight application written in C for playing OPUS files (files are parsed as glob expressions). With the mixture of **`opusfile`** and **PortAudio** this application is made (this is somewhat inferior to SOX's `play`).
 
 ### Lacking features
 - Play/Pause
