@@ -7,7 +7,7 @@ LDLIBS+= $(shell pkg-config --cflags --libs opus opusfile libpulse libpulse-simp
 BIN = opusplayer
 BINDIR = bin
 
-build: src/player.cc src/memory.h
+build: src/player.cc
 	- mkdir $(BINDIR)
 	$(CXX) -g -o "$(BINDIR)/$(BIN).out" $(CXXFLAGS) $^ $(LDLIBS)
 

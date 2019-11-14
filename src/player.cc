@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <cassert>
 #include <string>
+#include <array>
 #include <opus/opusfile.h>
 #include <pulse/simple.h>
 #include <glob.h>
@@ -48,9 +49,7 @@ int main(int argc, char** argv) {
 
         const OpusHead* header = op_head(opus_file_handle, 0);
         playback_attrs.channels = header->channel_count;
-
         size_t PCM_SIZE = header->channel_count * PCM_BASE_SIZE;
-        size_t PCM_BYTES = sizeof(short) * PCM_SIZE;
 
         /**
          * Intialise a PulseAudio sever for playing back the audio.
@@ -66,11 +65,7 @@ int main(int argc, char** argv) {
             &error);
 
         assert(("PulseAudio server cannot be initialized!", error == 0));
-
-        /* Decoded raw PCM data from the arbitary OPUS file */
-        Memory* opus_decoded = (Memory*)malloc(sizeof(Memory)); 
-        opus_decoded->data = malloc(sizeof(short) * PCM_SIZE);
-        opus_decoded->size = sizeof(short) * PCM_SIZE;
+        std::vector<short> opus_decoded;
 
         /**
          * Put a little bit of information to the STDERR.
@@ -94,9 +89,9 @@ int main(int argc, char** argv) {
          * The more number of channels in the OPUS packet
          * the much time it would take to decode.
          */
-        while(op_read(opus_file_handle, (short*)opus_decoded->data, PCM_SIZE, &error) > 0) {
+        while(op_read(opus_file_handle, opus_decoded.data(), opus_decoded.size(), &error) > 0) {
             if (error != 0) break; // Break if opus cannot decode the bitstream from the file.
-            pa_simple_write(playback, opus_decoded->data, opus_decoded->size, &error);
+            pa_simple_write(playback, opus_decoded.data(), opus_decoded.size() * sizeof(short), &error);
             if (error != 0) break; // Break if something is wrong with the playback.
         }
 
