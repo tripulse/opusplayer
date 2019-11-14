@@ -17,8 +17,6 @@ std::string channel_name_h(uint8_t channels) {
         case 1: return "mono";
         case 2: return "stereo";
         case 3: return "2.1";
-        // case 4:
-        // case 5:
         case 6: return "surround";
         default: return std::to_string(channels);
     }
