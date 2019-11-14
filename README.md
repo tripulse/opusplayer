@@ -14,10 +14,7 @@ A simple and lightweight application written in C for playing OPUS files (files 
 Dependencies (`libopusfile`, `libopus`, `libpulse`) must be present in the system (either building from source or installing from the OS' software repository).
 
 ```sh
-# Build the ELF binaries from the source.
 make build
-
-# Install them into the system's /usr/bin directory.
 sudo make install
 make clean
 ```
