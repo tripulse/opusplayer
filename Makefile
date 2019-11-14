@@ -4,8 +4,17 @@ CFLAGS = -std=c11 -Ofast
 CXXFLAGS = -std=c++17 -Ofast
 LDLIBS+= $(shell pkg-config --cflags --libs opus opusfile libpulse libpulse-simple)
 
+BIN = opusplayer
+BINDIR = bin
 
-BINDIR = $(bin)
-player: src/player.cc src/memory.h
-	# '-g' flag enables debugging symbols to debug the code in GDB.
-	$(CXX) -g -o $@.out $(CXXFLAGS) $^ $(LDLIBS)
+build: src/player.cc src/memory.h
+	- mkdir $(BINDIR)
+	$(CXX) -g -o "$(BINDIR)/$(BIN).out" $(CXXFLAGS) $^ $(LDLIBS)
+
+.PHONY: install clean
+install:
+	cp $(BINDIR)/* /usr/bin
+	whereis $(BIN)
+
+clean:
+	rm -r $(BINDIR)
