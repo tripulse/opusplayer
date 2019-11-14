@@ -1,69 +1,44 @@
 #include <cstdio>
 #include <cassert>
-#include <string>
-#include <array>
+#include <vector>
 #include <opus/opusfile.h>
-#include <pulse/simple.h>
+#include <portaudio.h>
 #include <glob.h>
-#include "memory.h"
-#include <unistd.h>
+#include "dsputils.hxx"
 
-/* Base size to decode the PCM data from the OPUS file. */
-#define PCM_BASE_SIZE 480
-
-/* Converts number of channels to a human readable text if possible */
-std::string channel_name_h(uint8_t channels) {
-    switch(channels) {
-        case 1: return "mono";
-        case 2: return "stereo";
-        case 3: return "2.1";
-        case 6: return "surround";
-        default: return std::to_string(channels);
-    }
-}
-
-int error = 0; // `0` no errors at all.
+OpusPlayerStatusCode error = 0; // `0` no errors at all.
 int main(int argc, char** argv) {
     glob_t opus_files;
     glob(argv[1], GLOB_TILDE, NULL, &opus_files);
     
-    /* Configuration to play the audio back to the speaker. */
-    pa_sample_spec playback_attrs = {
-        .format = PA_SAMPLE_S16NE, // Decode 16-bit audio from input (system byte-order).
-        .rate = 48000, // https://github.com/xiph/opusfile/blob/master/include/opusfile.h#L56
-    };
+    // /* Configuration to play the audio back to the speaker. */
+    // pa_sample_spec playback_attrs = {
+    //     .format = PA_SAMPLE_S16NE, // Decode 16-bit audio from input (system byte-order).
+    //     .rate = 48000, // https://github.com/xiph/opusfile/blob/master/include/opusfile.h#L56
+    // };
+
+    /* Stream to send the decoded PCM data from the OPUS file to. */
+    PaStream *playback_stream;
+    const PaStreamInfo* playback_streaminfo;
+    short* opus_decoded = (short*)malloc(sizeof(short) * PCM_SIZE);
+
+    Pa_Initialize();
+    Pa_OpenDefaultStream(
+        &playback_stream, 
+        0, 2, paInt16, 48000.0, PCM_BASE_SIZE, 
+        NULL, NULL
+    );
+    playback_streaminfo = Pa_GetStreamInfo(playback_stream);
+    Pa_StartStream(playback_stream);
 
     size_t file_idx = 0;
     player:
         OggOpusFile* opus_file_handle = op_open_file(opus_files.gl_pathv[file_idx], &error);
-        assert(("File doesn't exist in the filesystem!", error == 0));
-
-        /* Skip the current file if cannot be opened. */
         if(error != 0) {
             ++file_idx;
             fprintf(stderr, "%s: the file a invalid OPUS file or doesn't exist!", opus_files.gl_pathv[file_idx]);
             goto player;
         }
-
-        const OpusHead* header = op_head(opus_file_handle, 0);
-        playback_attrs.channels = header->channel_count;
-        size_t PCM_SIZE = header->channel_count * PCM_BASE_SIZE;
-
-        /**
-         * Intialise a PulseAudio sever for playing back the audio.
-         * Returns a opaque instance to the handle to write data into.
-         * 
-         * This works only in Linux, on windows it wouldn't work.
-         */
-        pa_simple *playback = pa_simple_new(
-            NULL, argv[0], 
-            PA_STREAM_PLAYBACK, NULL, 
-            argv[0], &playback_attrs, 
-            NULL, NULL, 
-            &error);
-
-        assert(("PulseAudio server cannot be initialized!", error == 0));
-        std::vector<short> opus_decoded;
 
         /**
          * Put a little bit of information to the STDERR.
@@ -71,12 +46,8 @@ int main(int argc, char** argv) {
          */
         fprintf(stderr, 
             "* %s\n"
-            "   - Duration: %.2fs\n"
-            "   - Channels: %s\n"
-            "   - Out Gain: %d dBFS\n",
-            opus_files.gl_pathv[file_idx], (float)op_pcm_total(opus_file_handle, 0) / 48000.0f,
-            channel_name_h(header->channel_count).c_str(),
-            header->output_gain
+            "   - Duration: %.2fs\n",
+            opus_files.gl_pathv[file_idx], (float)op_pcm_total(opus_file_handle, 0) / 48000.0f
         );
 
         /**
@@ -87,17 +58,21 @@ int main(int argc, char** argv) {
          * The more number of channels in the OPUS packet
          * the much time it would take to decode.
          */
-        while(op_read(opus_file_handle, opus_decoded.data(), opus_decoded.size(), &error) > 0) {
-            if (error != 0) break; // Break if opus cannot decode the bitstream from the file.
-            pa_simple_write(playback, opus_decoded.data(), opus_decoded.size() * sizeof(short), &error);
-            if (error != 0) break; // Break if something is wrong with the playback.
+        while(op_read_stereo(opus_file_handle, opus_decoded, PCM_SIZE) > 0) {
+            // Exit the loop if cannot decode further.
+            if (error != 0) break;
+
+            /* Write the buffer to the PortAudio stream for Playback. */
+            Pa_WriteStream(playback_stream, opus_decoded, PCM_BASE_SIZE);
+            
+            // Exit the loop if cannot playback PCM buffer.
+            if (error != paNoError) break;
         }
 
-        /* Cleanup the application instance from the PulseAudio server. 
-        Because each audio file has different channels. */
-        pa_simple_drain(playback, &error); // Wait unti all the data is finished to write.
-        pa_simple_flush(playback, &error); // Flush all the reamaining data as samples.
-        pa_simple_free(playback); // Free the instance.
+        // If files are left to be played then again goto the current statement.
+        if(file_idx < opus_files.gl_pathc) ++file_idx; goto player;
 
-        if(file_idx < opus_files.gl_pathc) goto player;
+    Pa_StopStream(playback_stream);
+    Pa_CloseStream(playback_stream);
+    Pa_Terminate();
 }

@@ -2,7 +2,7 @@ CXX = g++
 CC = gcc
 CFLAGS = -std=c11 -Ofast
 CXXFLAGS = -std=c++17 -Ofast
-LDLIBS+= $(shell pkg-config --cflags --libs opus opusfile libpulse libpulse-simple)
+LDLIBS+= $(shell pkg-config --cflags --libs opus opusfile portaudio-2.0)
 
 BIN = opusplayer
 BINDIR = bin
