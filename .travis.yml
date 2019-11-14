@@ -1,0 +1,14 @@
+language: cpp
+compiler: gcc
+
+- os: linux
+  addons:
+    apt:
+      packages:
+        - libpulse-dev
+        - libopus-dev
+        - libopusfile-dev
+
+install:
+  - make build
+  - make clean
