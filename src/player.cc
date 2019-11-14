@@ -14,7 +14,8 @@ int main(int argc, char** argv) {
     /* Stream to send the decoded PCM data from the OPUS file to. */
     PaStream *playback_stream;
     OggOpusFile *opus_file_handle;
-    short* opus_decoded = (short*)malloc(sizeof(short) * PCM_SIZE);
+    std::vector<short> opus_decoded;
+    opus_decoded.resize(PCM_SIZE);
 
     Pa_Initialize();
     Pa_OpenDefaultStream(
@@ -51,11 +52,11 @@ int main(int argc, char** argv) {
          * The more number of channels in the OPUS packet
          * the much time it would take to decode.
          */
-        while(op_read_stereo(opus_file_handle, opus_decoded, PCM_SIZE) > 0) {
+        while(op_read_stereo(opus_file_handle, opus_decoded.data(), PCM_SIZE) > 0) {
             // Exit the loop if cannot decode further.
             if (error != 0) break;
             /* Write the buffer to the PortAudio stream for Playback. */
-            Pa_WriteStream(playback_stream, opus_decoded, PCM_BASE_SIZE);
+            Pa_WriteStream(playback_stream, opus_decoded.data(), PCM_BASE_SIZE);
             // Exit the loop if cannot playback PCM buffer.
             if (error != paNoError) break;
         }
