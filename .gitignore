@@ -1,8 +1,0 @@
-bin/**
-*.out
-.vscode/
-
-win32/.vs/
-win32/Debug/
-win32/Release/
-win32/bin/
