@@ -11,10 +11,18 @@ A simple and lightweight application written in C for playing OPUS files (files 
 
 ## Installation
 
-Dependencies (`libopusfile`, `libopus`, `libportaudio`) must be present in the system (either building from source or installing from the OS' software repository).
+> This is the *nix style of building the application from the source. If you're looking for the Windows way to build this, head to the
+`win32` branch for that (MSVC toolchain and Visual Studio are required).
+
+In order to have a sucessful build you *must* satisfy these depedencies:
+- [opusfile](https://opus-codec.org/release/dev/2018/09/18/opusfile-0_11.html)
+  - [libopus](https://opus-codec.org/release/stable/2019/04/12/libopus-1_3_1.html)
+  - [libogg](https://www.xiph.org/downloads/)
+- [libportaudio](http://portaudio.com/download.html)
+
 
 ```sh
 make build
-sudo make install
-make clean
+sudo make install # Optional: user may not install binaries
+make clean # Optional: cleanup isn't required unless cleaning mess
 ```
