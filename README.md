@@ -7,7 +7,7 @@ A simple and lightweight application written in C for playing OPUS files (files 
 ### Key features
 - OPUS decoding via `libopusfile`.
 - Cross-platform audio API.
-- Glob expressions to select files.
+- Glob expressions to select files (only on UNIX).
 
 ## Installation
 
