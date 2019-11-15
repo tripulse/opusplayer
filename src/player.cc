@@ -6,17 +6,39 @@
 #include <glob.h>
 #include "dsputils.hxx"
 
-OpusPlayerStatusCode error = 0; // `0` no errors at all.
+// This variable stores the error codes returned by various function
+// called to perform tasks correspoding to them.
+OpusPlayerStatusCode error = 0;
+
 int main(int argc, char** argv) {
+    // Abort if no file pattern is speicfied as the input parameter.
+    if(argc < 2) abort();
+
+    // Glob all the files matching the following pattern 
+    // provided in the arguments.
     glob_t opus_files;
     glob(argv[1], 0, NULL, &opus_files);
 
-    /* Stream to send the decoded PCM data from the OPUS file to. */
-    PaStream *playback_stream;
-    OggOpusFile *opus_file_handle;
+    PaStream *playback_stream;      // Opaque instance to the Play stream to send data.
+    OggOpusFile *opus_file_handle;  // File handle to grab the OPUS data from.
+
+    /**
+     * Temporarily holds the decoded PCM data for playback.
+     * 16-bit signed, because every system's CPU doesn't have FPU.
+     */
     std::vector<short> opus_decoded;
     opus_decoded.resize(PCM_SIZE);
 
+    /** 
+     * Intialize the audio output system for output.
+     * Connects with the Host API and add layer of
+     * abstraction to play/capture audio.
+     * 
+     * Output is always:
+     *  ~ 16-bit Signed.
+     *  ~ Stereo channels.
+     *  ~ 48khZ samplerate.
+     */
     Pa_Initialize();
     Pa_OpenDefaultStream(
         &playback_stream, 
@@ -25,7 +47,7 @@ int main(int argc, char** argv) {
     );
     Pa_StartStream(playback_stream);
 
-    size_t file_idx = 0;
+    size_t opus_file_index = 0; // Index of the current OPUS file.
     player:
         if(opus_files.gl_pathc == 0) goto exit;
         opus_file_handle = op_open_file(opus_files.gl_pathv[file_idx], &error);
