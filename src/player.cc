@@ -50,11 +50,11 @@ int main(int argc, char** argv) {
     size_t opus_file_index = 0; // Index of the current OPUS file.
     player:
         if(opus_files.gl_pathc == 0) goto exit;
-        opus_file_handle = op_open_file(opus_files.gl_pathv[file_idx], &error);
+        opus_file_handle = op_open_file(opus_files.gl_pathv[opus_file_index], &error);
 
         // If files are still left in the Path vector then rerun this statement again.
         // Until all the files are finished to playback, play them.
-        if(error != 0 && file_idx < opus_files.gl_pathc) {++file_idx; goto player;}
+        if(error != 0 && opus_file_index < opus_files.gl_pathc) {++opus_file_index; goto player;}
         else if(error != 0) goto exit;
 
         /**
@@ -63,7 +63,7 @@ int main(int argc, char** argv) {
          */
         fprintf(stderr, 
             "* %s [%.2fs]\n",
-            opus_files.gl_pathv[file_idx], (float)op_pcm_total(opus_file_handle, 0) / 48000.0f
+            opus_files.gl_pathv[opus_file_index], (float)op_pcm_total(opus_file_handle, 0) / 48000.0f
         );
 
         /**
@@ -83,7 +83,7 @@ int main(int argc, char** argv) {
             if (error != paNoError) break;
         }
 
-        if(file_idx < opus_files.gl_pathc) ++file_idx; goto player;
+        if(opus_file_index < opus_files.gl_pathc) ++opus_file_index; goto player;
 
     exit:
         Pa_StopStream(playback_stream);
