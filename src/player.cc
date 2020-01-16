@@ -7,7 +7,6 @@
 #include "dsputils.hxx"
 
 OpusPlayerStatusCode error = 0;
-
 int main(int argc, char** argv) {
     if(argc < 2) abort();
 
@@ -30,7 +29,8 @@ int main(int argc, char** argv) {
      */
     Pa_Initialize();
     Pa_OpenDefaultStream(
-        &playback_stream, 
+        &playback_stream,
+        // NOTE: opus decodes to 48kHz no matter what's the original.
         0, 2, paInt16, 48000.0, PCM_BASE_SIZE, 
         NULL, NULL
     );
@@ -49,7 +49,7 @@ int main(int argc, char** argv) {
         /* Put some info on the Stderr. */
         fprintf(stderr, 
             "* %s [%.2fs]\n",
-            opus_files.gl_pathv[opus_fidx], (float)op_pcm_total(opus_file_handle, 0) / 48000.0f
+            opus_files.gl_pathv[op_fidx], (float)op_pcm_total(opus_file_handle, 0) / 48000.0f
         );
 
         while(op_read_stereo(opus_file_handle, opus_decoded.data(), PCM_SIZE) > 0) {
@@ -58,7 +58,7 @@ int main(int argc, char** argv) {
             if (error != paNoError) break;
         }
 
-        if(opus_file_index < opus_files.gl_pathc) ++opus_file_index; goto player;
+        if(op_fidx < opus_files.gl_pathc) ++op_fidx; goto player;
 
     exit:
         Pa_StopStream(playback_stream);
