@@ -49,7 +49,7 @@ int main(int argc, char** argv) {
         /* Put some info on the Stderr. */
         fprintf(stderr, 
             "* %s [%.2fs]\n",
-            opus_files.gl_pathv[opus_file_index], (float)op_pcm_total(opus_file_handle, 0) / 48000.0f
+            opus_files.gl_pathv[opus_fidx], (float)op_pcm_total(opus_file_handle, 0) / 48000.0f
         );
 
         while(op_read_stereo(opus_file_handle, opus_decoded.data(), PCM_SIZE) > 0) {
