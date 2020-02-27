@@ -13,3 +13,9 @@ jobs:
     
     - name: build binaries from source
       run: make build -j2
+    
+    - name: upload the binaries
+      uses: actions/upload-artifact@v1
+      with:
+        name: opusplayer gnu/linux build
+        path: "bin/opusplayer.out"
