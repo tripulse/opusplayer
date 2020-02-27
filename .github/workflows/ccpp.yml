@@ -17,5 +17,5 @@ jobs:
     - name: upload the binaries
       uses: actions/upload-artifact@v1
       with:
-        name: opusplayer gnu/linux build
+        name: opusplayer
         path: "bin/opusplayer.out"
