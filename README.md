@@ -1,18 +1,21 @@
-# opusplayer
+# opusplayer 🎵
 
 [![Build Status](https://travis-ci.org/tryamid/opusplayer.svg?branch=master)](https://travis-ci.org/tryamid/opusplayer)
 ![License](https://img.shields.io/badge/License-GPLv2-orange)
+![Madewith](https://img.shields.io/badge/Made%20with-C%2B%2B-orange)
 
-![](https://img.shields.io/badge/opusfile-0.11-blue?style=flat-square)
-![](https://img.shields.io/badge/libopus-1.3.1-blue?style=flat-square)
-![](https://img.shields.io/badge/libogg-1.3.4-blue?style=flat-square)
-![](https://img.shields.io/badge/libportaudio-19.06-blue?style=flat-square)
+#### Dependency Tree 📜
+- ![](https://img.shields.io/badge/opusfile-0.11-blue)
+  - ![](https://img.shields.io/badge/libopus-1.3.1-blue)
+  - ![](https://img.shields.io/badge/libogg-1.3.4-blue)
+- ![](https://img.shields.io/badge/libportaudio-19.06-blue)
 
-Simple and lightweight application written in C++ for playing *OggOPUS* files. With mixture of **`opusfile`** and **PortAudio**.
+Simple and lightweight application written in C++ for playing *OggOPUS* files. This is only can parse OGGOpus files, in future it may read OPUS data from other formats too.
 
-### Key features
-- Cross platform.
+#### Key features 🌟
+- Cross platform (with PortAudio).
 - File globbing (only on UNIX).
+- Very very lightweight.
 
 ## Installation
 
