@@ -4,6 +4,7 @@
 
 ---
 
+![C/C++ CI](https://github.com/tryamid/opusplayer/workflows/C/C++%20CI/badge.svg)
 [![Build Status](https://travis-ci.org/tryamid/opusplayer.svg?branch=master)](https://travis-ci.org/tryamid/opusplayer)
 ![License](https://img.shields.io/badge/License-GPLv2-orange)
 ![Madewith](https://img.shields.io/badge/Made%20with-C%2B%2B-orange)
