@@ -1,4 +1,7 @@
-# opusplayer [![Build Status](https://travis-ci.org/tryamid/opusplayer.svg?branch=master)](https://travis-ci.org/tryamid/opusplayer)
+# opusplayer
+
+[![Build Status](https://travis-ci.org/tryamid/opusplayer.svg?branch=master)](https://travis-ci.org/tryamid/opusplayer)
+![License](https://img.shields.io/badge/License-GPLv2-orange?style=for-the-badge)
 
 Simple and lightweight application written in C++ for playing *OggOPUS* files. With mixture of **`opusfile`** and **PortAudio**.
 
