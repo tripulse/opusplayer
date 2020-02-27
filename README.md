@@ -1,7 +1,7 @@
 # opusplayer
 
 [![Build Status](https://travis-ci.org/tryamid/opusplayer.svg?branch=master)](https://travis-ci.org/tryamid/opusplayer)
-![License](https://img.shields.io/badge/License-GPLv2-orange?style=for-the-badge)
+![License](https://img.shields.io/badge/License-GPLv2-orange?style=flat-square)
 
 Simple and lightweight application written in C++ for playing *OggOPUS* files. With mixture of **`opusfile`** and **PortAudio**.
 
@@ -19,10 +19,10 @@ Simple and lightweight application written in C++ for playing *OggOPUS* files. W
 > All the binaries and DLLs go to the `bin` directory.
 
 In order to have a sucessful build you *must* satisfy these depedencies:
-- [opusfile](https://opus-codec.org/release/dev/2018/09/18/opusfile-0_11.html)
-  - [libopus](https://opus-codec.org/release/stable/2019/04/12/libopus-1_3_1.html)
-  - [libogg](https://www.xiph.org/downloads/)
-- [libportaudio](http://portaudio.com/download.html)
+- [![](https://img.shields.io/badge/opusfile-0.11-blue?style=flat-square)](https://opus-codec.org/release/dev/2018/09/18/opusfile-0_11.html)
+  - [![](https://img.shields.io/badge/libopus-1.3.1-blue?style=flat-square)](https://opus-codec.org/release/stable/2019/04/12/libopus-1_3_1.html)
+  - [![](https://img.shields.io/badge/libogg-1.3.4-blue?style=flat-square)](https://www.xiph.org/downloads/)
+- [![](https://img.shields.io/badge/libportaudio-19.06-blue?style=flat-square)](http://portaudio.com/download.html)
 
 
 ```sh
