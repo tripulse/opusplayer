@@ -1,0 +1,16 @@
+name: C/C++ CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install dependencies for compilation.
+      run: apt-get install libopusfile-dev portaudio19-dev
+    
+    - name: Build binaries from source.
+      run: make build
