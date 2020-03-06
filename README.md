@@ -40,3 +40,9 @@ make build
 sudo make install
 make clean # optional: cleanup isn't required unless cleaning mess
 ```
+
+### Usage
+Play an OGGOpus file from the pre-provided test samples in the `examples/` directory. For example the tetris one.
+```
+./opusplayer examples/tetris.opus
+```
