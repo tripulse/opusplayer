@@ -1,5 +1,13 @@
+/**
+ * Copyright (C) 2020 Shantanu Biswas.
+ * See the LICENSE file for more information.
+ *
+ * This program decodes OGGOpus files from the current directory
+ * namespace (recursively) and plays them in no particular order,
+ * with PortAudio (universal audio capture/playback API).
+ */
+
 #include <cstdio>
-#include <cassert>
 #include <vector>
 #include <opus/opusfile.h>
 #include <portaudio.h>
