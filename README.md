@@ -51,5 +51,7 @@ $ opusplayer 'examples/tetris.opus'
 
 Play multiple files from the `examples/` directory.
 ```sh
-opusplayer 'examples/*.opus'
+$ opusplayer 'examples/*.opus'
+* examples/sine.opus [5.00s]
+* examples/tetris.opus [83.61]
 ```
