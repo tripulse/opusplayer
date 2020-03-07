@@ -42,7 +42,14 @@ make clean # optional: cleanup isn't required unless cleaning mess
 ```
 
 ### Usage
-Play an OGGOpus file from the pre-provided test samples in the `examples/` directory. For example the tetris one.
+Play a file from the `examples/` directory in the repository.
+```sh
+$ opusplayer 'examples/tetris.opus'
+...
+* examples/tetris.opus [83.61s]
 ```
-./opusplayer examples/tetris.opus
+
+Play multiple files from the `examples/` directory.
+```sh
+opusplayer 'examples/*.opus'
 ```
