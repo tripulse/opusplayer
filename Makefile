@@ -5,7 +5,6 @@ LDLIBS+= $(shell pkg-config --cflags --libs opus opusfile portaudio-2.0)
 BIN = opusplayer
 
 build: player.cc
-	- mkdir $(BINDIR)
 	$(CXX) -g -o "$(BIN).out" $(CXXFLAGS) $^ $(LDLIBS)
 
 .PHONY: install clean
