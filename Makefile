@@ -5,7 +5,7 @@ LDLIBS+= $(shell pkg-config --cflags --libs opus opusfile portaudio-2.0)
 BIN = opusplayer
 BINDIR = bin
 
-build: src/player.cc
+build: player.cc
 	- mkdir $(BINDIR)
 	$(CXX) -g -o "$(BINDIR)/$(BIN).out" $(CXXFLAGS) $^ $(LDLIBS)
 
