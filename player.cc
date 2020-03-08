@@ -15,7 +15,7 @@
 
 int main(int argc, char** argv) {
     if(argc < 2)
-        printf("Glob expression (file name) not provided to parse from.");
+        printf("Glob expression (file name) not provided to parse from."), abort();
 
     glob_t infiles;
     glob(argv[1], 0, NULL, &infiles);
