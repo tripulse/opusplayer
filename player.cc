@@ -9,13 +9,13 @@
 
 #include <cstdio>
 #include <cstdlib>
-#include <vector>
 #include <opus/opusfile.h>
 #include <portaudio.h>
 #include <glob.h>
 
 int main(int argc, char** argv) {
-    if(argc < 2) abort();
+    if(argc < 2)
+        printf("Glob expression (file name) not provided to parse from.");
 
     glob_t infiles;
     glob(argv[1], 0, NULL, &infiles);
@@ -26,11 +26,14 @@ int main(int argc, char** argv) {
     int          err; // store the error code in it.
 
     Pa_Initialize();
-    Pa_OpenDefaultStream(
+    err = Pa_OpenDefaultStream(
         &audio_ctx,
         0, 2, paInt16, 48000.0, 480, 
         NULL, NULL);
-    Pa_StartStream(audio_ctx);
+    err |= Pa_StartStream(audio_ctx);
+
+    if(err != 0)
+        printf("PortAudio failed to initate the stream with its properties.");
 
     for(size_t fid = 0; fid < infiles.gl_pathc; ++fid) {
         op_parser = op_open_file(infiles.gl_pathv[fid], NULL);
