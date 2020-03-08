@@ -15,7 +15,7 @@
 
 int main(int argc, char** argv) {
     if(argc < 2)
-        printf("Glob expression (file name) not provided to parse from."), abort();
+        puts("Glob expression (file name) not provided to parse from."), abort();
 
     glob_t infiles;
     glob(argv[1], 0, NULL, &infiles);
@@ -33,7 +33,7 @@ int main(int argc, char** argv) {
     err |= Pa_StartStream(audio_ctx);
 
     if(err != 0)
-        printf("PortAudio failed to initate the stream with its properties.");
+        puts("PortAudio failed to initate the stream with its properties.");
 
     for(size_t fid = 0; fid < infiles.gl_pathc; ++fid) {
         op_parser = op_open_file(infiles.gl_pathv[fid], NULL);
