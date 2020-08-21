@@ -1,6 +1,5 @@
 /**
- * Copyright (C) 2020 Shantanu Biswas.
- * See the LICENSE file for more information.
+ * (c) Copyright 2020 tripulse. See LICENSE for detailed info.
  *
  * This program decodes OGGOpus files from the current directory
  * namespace (recursively) and plays them in no particular order,
