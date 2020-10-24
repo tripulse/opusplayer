@@ -6,10 +6,12 @@
  * with PortAudio (universal audio capture/playback API).
  */
 
-#include <cstdio>
-#include <cstdlib>
+#include <stdio.h>
+#include <stdlib.h>
+
 #include <opus/opusfile.h>
 #include <portaudio.h>
+
 #include <glob.h>
 
 int main(int argc, char** argv) {
